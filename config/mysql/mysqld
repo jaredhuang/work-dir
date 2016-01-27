@@ -1,0 +1,46 @@
+#!/bin/sh
+#created by jared
+####################################
+basedir=/usr/local/webserver/mysql
+datadir=/data/mysql/3306/data
+conf=/data/mysql/3306/my.cnf
+sock=/tmp/mysql.sock
+port=3306
+mysql_user="root"
+mysql_pwd="saylove"
+CmdPath="/usr/local/webserver/mysql/bin"
+####################################
+#startup function
+function_start_mysql()
+{
+    printf "Starting MySQL...\n"
+    /bin/sh ${CmdPath}/mysqld_safe --defaults-file=${conf} 2>&1 > /dev/null &
+}
+#stop function
+function_stop_mysql()
+{
+    printf "Stoping MySQL...\n"
+    ${CmdPath}/mysqladmin -u ${mysql_user} -p${mysql_pwd} -S ${sock} shutdown
+}
+#restart function
+function_restart_mysql()
+{
+    printf "Restarting MySQL...\n"
+    function_stop_mysql
+    sleep 6
+    function_start_mysql
+}
+case $1 in
+start)
+    function_start_mysql
+;;
+stop)
+    function_stop_mysql
+;;
+restart)
+    function_restart_mysql
+;;
+*)
+    printf "Usage: /etc/init.d/mysqld {start|stop|restart}\n"
+esac
+
