@@ -1,0 +1,100 @@
+git config --global user.name "jared"
+git config --global user.email "huang1798@qq.com"
+git config --global color.ui true
+git config --global core.editor vim
+git config --list
+
+cd /data/jared_work/mygit
+git init
+echo "hehe" > readme.txt
+git status
+git checkout -- readme.txt  ==> 后悔, 文件修改错了, 不行, 现在还不能提交, 赶紧把它恢复成没改之前的样子
+
+git add readme.txt
+git rm --cached readme.txt(回滚删除缓存区 add 的动作)
+git commit -m "add readme.txt"
+git status
+git log
+git log -p readme.txt     #看readme.txt文件做了哪些修改,一目了然, 提交的编号、作者、时间、做了哪些修改.
+
+echo "2hehe" >> readme.txt
+git diff readme.txt
+git commit -m "add 2hehe to readme.txt"
+
+git log                   # git log 只会在提交的时候记录, 像 reset 之类的操作都会记录在 reflog 中
+git reset --hard bfcadcf931900ae7c213711b1f713ed2d6d9f20e 
+git reset --hard HEAD^    #回退到上个版本 ，回退到上上个版本 HEAD^^
+git log
+git reflog
+git reset --hard 5126bfa  #回退到具体版本号
+
+远程仓库：
+cd /data/jared_work/mygit
+git remote add origin git@github.com:jaredhuang/demo.git
+cat .git/config 
+git pull origin master
+git push -u origin master
+
+开源软件：
+https://www.sourcetreeapp.com/
+
+分支:
+git checkout -b dev   =等价于=   git branch dev && git checkout dev
+echo "dev" >> dev.txt
+git status
+git add dev.txt
+git commit -m "add dev.txt"
+git checkout master   ==》 必须先到 master 你才能合并。
+git merge dev
+git branch 	  #查看分支情况
+git branch -d dev #删除分支
+
+远端分支：
+git branch -a  #查看
+git push origin --delete dev #删除
+
+冲突：
+git checkout -b prod
+echo "prod" >> prod.txt
+git add prod.txt
+git commit -m "change pro.txt"
+
+git checkout master
+echo "master" > prod.txt
+git add prod.txt 
+git commit -m "prod.txt add"
+git merge prod
+cat prod.txt 
+<<<<<<< HEAD
+master
+=======
+prod
+>>>>>>> prod
+echo "dddd" > prod.txt  #手动解决冲突
+git add prod.txt
+git commit -m "change proddddd"
+git merge prod
+
+git push origin prod  # 推送分支。
+
+打标签：
+git checkout master
+git tag v1.0
+git tag
+git show v1.0
+git push origin v1.0  # 推送标签
+git checkout v1.0
+
+cat .gitignore 
+# 此为注释 – 将被 Git 忽略
+*.[oa]       #<-- 忽略所有以 .o 或 .a 结尾的文件
+*~           #<-- 忽略所有以波浪符（~）结尾的文件
+*.a          #<-- 忽略所有 .a 结尾的文件
+!lib.a       # 但 lib.a 除外
+/TODO    # 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
+build/     # 忽略 build/ 目录下的所有文件
+doc/*.txt  # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
+doc/**/*.txt  # ignore all .txt files in the doc/ directory
+
+开源软件：
+http://markdownpad.com
