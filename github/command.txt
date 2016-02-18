@@ -33,7 +33,11 @@ cd /data/jared_work/mygit
 git remote add origin git@github.com:jaredhuang/demo.git
 cat .git/config 
 git pull origin master
-git push -u origin master
+git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认主机
+
+理解：https://github.com/rosing/pythoncamp0/blob/master/wiki/origin.md
+  origin 基本上在 remote、push 和 pull 相关语句中出现
+  origin 实际上可以理解为连接通道的名字，相当于给你建立的传输通道取个名字，这样好方便push pull 等文件传输。
 
 开源软件：
 https://www.sourcetreeapp.com/
@@ -98,3 +102,4 @@ doc/**/*.txt  # ignore all .txt files in the doc/ directory
 
 开源软件：
 http://markdownpad.com
+
