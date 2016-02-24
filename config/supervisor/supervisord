@@ -1,0 +1,39 @@
+#!/bin/sh
+#created by jared
+####################################
+
+#startup function
+function_start_super()
+{
+    printf "Starting supervisor ..\n"
+    supervisord -c /etc/supervisord.conf 2>&1 > /dev/null &
+}
+
+#stop function
+function_stop_super()
+{
+    printf "Stoping supervisor...\n"
+    pkill supervisord
+}
+
+#restart function
+function_restart_super()
+{
+    printf "Restarting supervisor...\n"
+    function_stop_super
+    sleep 6
+    function_start_super
+}
+case $1 in
+start)
+    function_start_super
+;;
+stop)
+    function_stop_super
+;;
+restart)
+    function_restart_super
+;;
+*)
+    printf "Usage: /etc/init.d/nginx {start|stop|restart}\n"
+esac
