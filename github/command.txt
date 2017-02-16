@@ -30,7 +30,13 @@ git reset --hard 5126bfa  #回退到具体版本号
 
 远程仓库：
 cd /data/jared_work/mygit
+
 git remote add origin git@github.com:jaredhuang/demo.git
+它在你的 .git/config 文件中添加了一节，指定了远程的名称 (origin), 远程仓库的URL地址，和用于获取操作的 Refspec
+[remote "origin"]
+       url = git@github.com:jaredhuang/demo.git
+       fetch = +refs/heads/*:refs/remotes/origin/*
+       
 cat .git/config 
 git pull origin master
 git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认主机
