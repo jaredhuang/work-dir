@@ -66,7 +66,7 @@
 私有仓库：
 	docker pull registry:2.1.1
 	mkdir /data/registry
-    docker run -d -v /data/registry:/var/lib/registry -p 5000:5000 --restart=always --name="docker-registry" registry:2.1.1
+        docker run -d -v /data/registry:/var/lib/registry -p 5000:5000 --restart=always --name="docker-registry" registry:2.1.1
 	docker tag nginx 172.20.132.110:5000/jaredtestnginx:v1  
 
 	docker images #查看镜像情况
