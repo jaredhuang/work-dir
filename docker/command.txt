@@ -1,0 +1,87 @@
+安装：
+	wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo  
+	wget -O /etc/yum.repos.d/epel-6.repo http://mirrors.aliyun.com/repo/epel-6.repo  
+
+	yum install docker-io -y  #版本1.7.1-2.el6 
+	yum install device-mapper-event-libs -y 
+
+	/etc/init.d/docker start
+
+练习用镜像：
+
+	docker pull chusiang/ansible-managed-node:centos-6
+
+	docker pull chusiang/ansible-managed-node:centos-7
+
+查：
+	docker images #查看本地已有的镜像
+	docker ps -a  #查看运行的容器情况
+	docker logs 961fd1162c2f  #获取容器输出信息,通过dockerlogs命令
+
+删:
+	docker rmi <IMAGE ID>  #删除镜像
+	docker rm -f <CONTAINER ID>  #删除容器
+
+保存：
+	docker save chusiang/ansible-managed-node > /data/centos_ansible_client.tar.gz #保存镜像
+	docker load < /data/centos_ansible_client.tar.gz #导入本地镜像
+
+运行：	
+	docker run -d -p 88:80 -v /data:/jared -v /data/ansible/:/ansible -h nginx --name nginx 01a4dbcdaf18  #p是映像端口，v是映像数据，h是容器主机名
+
+进入：
+	more /usr/sbin/dockerin.sh 
+	#!/bin/sh
+	PID=$(docker inspect --format '{{.State.Pid}}' $1)
+	nsenter --target $PID --mount --uts --ipc --net --pid
+
+自己做nginx镜像：
+	docker run -d -h yw-nginx-01 --name nginx 01a4dbcdaf18
+	dockerin.sh nginx
+	yum install wget gcc gcc-c++ make openssl-devel -y
+	cd /usr/local/src
+	wget http://nginx.org/download/nginx-1.9.3.tar.gz
+	wget http://ftp.cs.stanford.edu/pub/exim/pcre/pcre-8.37.tar.gz
+	tar -xvf pcre-8.37.tar.gz && tar -xvf nginx-1.9.3.tar.gz
+	useradd -s /sbin/nologin -M www
+	cd /usr/local/src/nginx-1.9.3
+	./configure --prefix=/usr/local/nginx --user=www --group=www --with-http_ssl_module --with-http_stub_status_module --with-pcre=/usr/local/src/pcre-8.37
+	make && make install
+	vim /etc/rc.local  #容器启动就运行nginx
+	/usr/local/nginx/sbin/nginx
+	vi /usr/local/nginx/conf/nginx.conf ##放前台运行
+	daemon off;
+	
+	上传镜像：
+	docker ps -a  #查看容器id
+	docker commit -m "jared nginx" 7eac45f5a53a jared/yw-nginx-01:v1	
+
+    docker images #查看上传后情况
+	REPOSITORY                      TAG                 IMAGE ID			CREATED              VIRTUAL SIZE
+	jared/yw-nginx-01               v1                  38bdc217f4c0        Abouta minute ago    821.5 MB	
+
+	运行镜像：
+	docker run -d -p 88:80 --name jarednginx 38bdc217f4c0 /usr/local/nginx/sbin/nginx
+
+私有仓库：
+	docker pull registry:2.1.1
+	mkdir /data/registry
+    docker run -d -v /data/registry:/var/lib/registry -p 5000:5000 --restart=always --name="docker-registry" registry:2.1.1
+	docker tag nginx 172.20.132.110:5000/jaredtestnginx:v1  
+
+	docker images #查看镜像情况
+	REPOSITORY                           TAG                 IMAGE ID		CREATED             VIRTUAL SIZE	
+	172.20.132.110:5000/jaredtestnginx   v1                  cbfa3eb33c93	12 days ago         182.5 MB
+	
+	vim /etc/sysconfig/docker 
+	other_args="--insecure-registry 172.20.132.110:5000"
+
+	/etc/init.d/docker restart
+
+	docker push 172.20.132.110:5000/jaredtestnginx:v1
+
+	其他一台机器：
+	vim /etc/sysconfig/docker
+	other_args="--insecure-registry 172.20.135.181:5000"
+	docker pull 172.20.135.181:5000/test/nginx:v1
+
