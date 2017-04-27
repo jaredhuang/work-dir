@@ -47,6 +47,14 @@ git push -u origin master  # 将本地的master分支推送到origin主机，同
   origin 基本上在 remote、push 和 pull 相关语句中出现
   origin 实际上可以理解为连接通道的名字，相当于给你建立的传输通道取个名字，这样好方便push pull 等文件传输。
 
+
+在被 git 管理的目录中删除文件时，可以选择如下两种方式来记录删除动作:
+命令一：rm     + git commit -am "abc"
+命令二：git rm + git commit -m  "abc"
+记住 git add . 仅能记录添加、改动的动作，删除的动作需靠 git rm 来完成。
+最后，rm 删除的文件是处于 not staged 状态的，也就是一种介于 “未改动” 和 “已提交过” 之间的状态。
+
+
 开源软件：
 https://www.sourcetreeapp.com/
 
