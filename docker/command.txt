@@ -56,7 +56,7 @@
 	docker ps -a  #查看容器id
 	docker commit -m "jared nginx" 7eac45f5a53a jared/yw-nginx-01:v1	
 
-    docker images #查看上传后情况
+    	docker images #查看上传后情况
 	REPOSITORY                      TAG                 IMAGE ID			CREATED              VIRTUAL SIZE
 	jared/yw-nginx-01               v1                  38bdc217f4c0        Abouta minute ago    821.5 MB	
 
