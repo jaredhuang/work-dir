@@ -14,7 +14,7 @@
 	docker pull chusiang/ansible-managed-node:centos-7
 
 查：
-	docker search  jenkins   # 查看仓库是否有 jenkins
+	docker search  jenkins   # 查看仓库是否有 jenkins, 访问地址：https://index.docker.io/v1/search?q=jenkins
 	docker images #查看本地已有的镜像
 	docker ps -a  #查看运行的容器情况
 	docker logs 961fd1162c2f  #获取容器输出信息,通过dockerlogs命令
