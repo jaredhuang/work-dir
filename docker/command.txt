@@ -30,6 +30,10 @@
 运行：	
 	docker run -d -p 88:80 -v /data:/jared -v /data/ansible/:/ansible -h nginx --name nginx 01a4dbcdaf18  #p是映像端口，v是映像数据，h是容器主机名
 
+唤醒STATUS为Exited的容器：
+
+	docker start 'CONTAINER ID'
+
 进入：
 	more /usr/sbin/dockerin.sh 
 	#!/bin/sh
