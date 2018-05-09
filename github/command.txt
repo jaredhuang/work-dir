@@ -32,7 +32,7 @@ git reset --hard 5126bfa  #回退到具体版本号
 cd /data/jared_work/mygit
 
 git remote add origin git@github.com:jaredhuang/demo.git #参详http://iissnan.com/progit/html/zh-tw/ch9_5.html【收入百度云】
-它在你的 .git/config 文件中添加了一节，指定了远程的名称 (origin), 远程仓库的URL地址，和用于获取操作的 Refspec
+在你的 .git/config 文件中添加了如下配置，指定了远程的名称 (origin), 远程仓库的URL地址，和用于获取操作的 Refspec
 [remote "origin"]
        url = git@github.com:jaredhuang/demo.git
        fetch = +refs/heads/*:refs/remotes/origin/*
