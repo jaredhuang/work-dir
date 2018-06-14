@@ -39,7 +39,11 @@ git remote add origin git@github.com:jaredhuang/demo.git #参详http://iissnan.c
 Refspec 的格式是一個可選的 + 號，接著是 <src>:<dst> 的格式，這裡 <src> 是遠端上的引用格式， <dst> 是將要記錄在本地的引用格式。可選的 + 號告訴 Git 在即使不能快速演進(fast-forward)的情況下，也去強制更新它。
 預設情況下 refspec 會被 git remote add 命令所自動產生，Git 會獲取遠端伺服器上 refs/heads/ 下面的所有引用，並將它寫入到本地的 refs/remotes/origin/. 
 
-cat .git/config 
+cat .git/config
+
+如果碰到需要输入密码的情况，用下面的命令来解决--20180614：
+ssh -v -T git@your.gitlb.com <---调试过程
+
 git pull origin master
 git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认主机
 
