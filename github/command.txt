@@ -43,6 +43,7 @@ cat .git/config
 
 如果碰到需要输入密码的情况，用下面的命令来解决--20180614：
 ssh -v -T git@your.gitlb.com <---调试过程
+检查生成的 /root/.ssh/id_rsa.pub 在复制的时候是不是有空格。
 
 git pull origin master
 git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认主机
