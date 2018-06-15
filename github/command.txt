@@ -45,9 +45,19 @@ cat .git/config
 ssh -v -T git@your.gitlb.com <---调试过程
 检查生成的 /root/.ssh/id_rsa.pub 在复制的时候是不是有空格。
 
-git pull origin master
-git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认主机
+git pull origin master <-- 发现有冲突怎么办【Merge】
+    From xxx.xxx.com:jared/hello-test
+     * branch            master     -> FETCH_HEAD
+    Auto-merging readme.txt
+    CONFLICT (add/add): Merge conflict in readme.txt
+    Automatic merge failed; fix conflicts and then commit the result.
 
+echo "dddd" > readme  #手动解决冲突
+git add readme.txt
+git commit -m "change readme"
+git push origin master  # 推送分支。
+
+git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认
 理解：https://github.com/rosing/pythoncamp0/blob/master/wiki/origin.md
   origin 基本上在 remote、push 和 pull 相关语句中出现
   origin 实际上可以理解为连接通道的名字，相当于给你建立的传输通道取个名字，这样好方便push pull 等文件传输。
@@ -90,11 +100,11 @@ git add prod.txt
 git commit -m "prod.txt add"
 git merge prod
 cat prod.txt 
-<<<<<<< HEAD
-master
-=======
-prod
->>>>>>> prod
+    <<<<<<< HEAD
+    master
+    =======
+    prod
+    >>>>>>> prod
 echo "dddd" > prod.txt  #手动解决冲突
 git add prod.txt
 git commit -m "change proddddd"
