@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+             http://maven.apache.org/maven-v4_0_0.xsd">
+
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.github.ningg.mvnbook</groupId>
+<artifactId>hello-world</artifactId>
+<version>1.0-SNAPSHOT</version>
+<name>Maven Hello World Project</name>
+
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+
+<dependencies>
+
+   <!--单元测试需要添加的 2018.6.15,自动下载junit-4.7.jar 这个包
+       下载到 /root/.m2/repository/junit/junit/4.7目录下了 -->
+   <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+   </dependency>
+
+   <!--servlet 封装需要引用到的jar-->
+   <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+        <scope>provided</scope>
+   </dependency>
+   <dependency>
+        <groupId>javax.servlet.jsp</groupId>
+        <artifactId>jsp-api</artifactId>
+        <version>2.1</version>
+        <scope>provided</scope>
+   </dependency>
+   <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+   </dependency>
+
+</dependencies>
+
+<packaging>war</packaging>
+<build>
+    <finalName>ROOT</finalName>
+    <resources>
+        <resource>
+           <directory>src/main/java</directory>
+               <includes>
+                 <include>**/**</include>
+               </includes>
+               <filtering>true</filtering>
+        </resource>
+    </resources>
+    <plugins>
+        <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+<!--- 借助 maven-shade-plugin 生成可执行的jar文件,生成META-INF/MANIFEST.MF的Main-class信息
+然后在项目的根目录执行该jar文件
+java -jar target/hello-world-1.0-SNAPSHOT.jar  ===》输出 Hello Maven
+
+<build>
+ <plugins>
+  <plugin>
+   <groupId>org.apache.maven.plugins</groupId>
+   <artifactId>maven-shade-plugin</artifactId>
+   <version>1.2.1</version>
+   <executions>
+     <execution>
+       <phase>package</phase>
+       <goals>
+         <goal>shade</goal>
+       </goals>
+       <configuration>
+         <transformers>
+         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+           <mainClass>com.github.ningg.mvnbook.helloworld.HelloWorld</mainClass>
+         </transformer>
+         </transformers>
+       </configuration>
+     </execution>
+   </executions>
+  </plugin>
+ </plugins>
+</build>
+--->
+
+</project>
