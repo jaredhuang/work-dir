@@ -74,7 +74,7 @@ git push -u origin master  # 将本地的master分支推送到origin主机，同
 https://www.sourcetreeapp.com/
 
 分支:
-git checkout -b dev   =等价于=   git branch dev && git checkout dev
+git checkout -b dev   =切换分支到dev分支，命令等价于=   git branch dev && git checkout dev
 echo "dev" >> dev.txt
 git status
 git add dev.txt
