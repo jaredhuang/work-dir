@@ -85,7 +85,7 @@ git branch 	  #查看分支情况
 git branch -d dev #删除分支
 
 远端分支：
-git branch -a  #查看
+git branch -a  #查看所有分支列表。
 git push origin --delete dev #删除
 
 冲突：
