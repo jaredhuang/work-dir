@@ -81,6 +81,8 @@ git add dev.txt
 git commit -m "add dev.txt"
 git checkout master   ==》 必须先到 master 你才能合并。
 git merge dev
+git branch --merged  ==> 在master上，然后查看哪个分支被merged过来了。
+git branch --no-merged  ==》 在 master上， 查看没被merged过来的分支。
 git branch 	  #查看分支情况
 git branch -d dev #删除分支
 
