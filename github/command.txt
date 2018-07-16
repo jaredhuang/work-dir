@@ -4,6 +4,8 @@ git config --global color.ui true
 git config --global core.editor vim
 git config --list
 
+git status # 很重要，看你的工作目录情况：是否缓冲区(touch jared)有文件，工作目录(git add t1)有没有文件
+
 cd /data/jared_work/mygit
 git init
 echo "hehe" > readme.txt
@@ -12,7 +14,7 @@ git checkout -- readme.txt  #还没add的文件，通过这个命令，可以通
 git checkout dev  # checkout 还有个作用是切换分支
 
 git add readme.txt
-git rm --cached readme.txt  # 回滚, 删除缓存区 add 的动作
+git rm --cached readme.txt  # 缓存区(git add t1) 的文件被回滚。
 git commit -m "add readme.txt"
 git status
 git log
@@ -23,9 +25,11 @@ git diff readme.txt
 git commit -m "add 2hehe to readme.txt"
 
 git log   # git log 只会在提交的时候记录, 像 reset 之类的操作都会记录在 reflog 中
-git reset --hard bfcadcf931900ae7c213711b1f713ed2d6d9f20e 
+git reset --hard bfcadc  # hard 缓冲区(touch jared) 跟 工作区(git add jared) ,全部回滚。
+git reset --mixed bfcadc  # mixed 缓冲区的被回滚了，工作区的保留不变。
 git reset --hard HEAD^    #回退到上个版本 ，回退到上上个版本 HEAD^^
-git log
+
+git log  # reset 之类的操作都会记录在 reflog 中
 git reflog
 git reset --hard 5126bfa  #回退到具体版本号
 
@@ -103,6 +107,7 @@ git reset --hard 5126bfa  #回退到具体版本号
     git push origin prod  # 推送分支。
 
 打标签：
+    git help tag
     git checkout master
     git tag v1.0
     git tag
