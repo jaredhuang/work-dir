@@ -8,7 +8,8 @@ cd /data/jared_work/mygit
 git init
 echo "hehe" > readme.txt
 git status
-git checkout -- readme.txt  # 后悔, 文件修改错了, 不行, 现在还不能提交, 赶紧把它恢复成没改之前的样子
+git checkout -- readme.txt  #还没add的文件，通过这个命令，可以通过版本库的文件覆盖它。
+git checkout dev  # checkout 还有个作用是切换分支
 
 git add readme.txt
 git rm --cached readme.txt  # 回滚, 删除缓存区 add 的动作
@@ -59,8 +60,6 @@ git reset --hard 5126bfa  #回退到具体版本号
         理解：https://github.com/rosing/pythoncamp0/blob/master/wiki/origin.md
           origin 基本上在 remote、push 和 pull 相关语句中出现
           origin 实际上可以理解为连接通道的名字，相当于给你建立的传输通道取个名字，这样好方便push pull 等文件传输。
-
-
 
 分支:
     git checkout -b dev   # 切换分支到dev分支，命令等价于 => git branch dev && git checkout dev
