@@ -1,5 +1,5 @@
 git config --global user.name "jared"
-git config --global user.email "huang1798@qq.com"
+git config --global user.email "xxxx@qq.com"
 git config --global color.ui true
 git config --global core.editor vim
 git config --list
@@ -8,10 +8,10 @@ cd /data/jared_work/mygit
 git init
 echo "hehe" > readme.txt
 git status
-git checkout -- readme.txt  ==> 后悔, 文件修改错了, 不行, 现在还不能提交, 赶紧把它恢复成没改之前的样子
+git checkout -- readme.txt  # 后悔, 文件修改错了, 不行, 现在还不能提交, 赶紧把它恢复成没改之前的样子
 
 git add readme.txt
-git rm --cached readme.txt(回滚删除缓存区 add 的动作)
+git rm --cached readme.txt  # 回滚, 删除缓存区 add 的动作
 git commit -m "add readme.txt"
 git status
 git log
@@ -21,118 +21,109 @@ echo "2hehe" >> readme.txt
 git diff readme.txt
 git commit -m "add 2hehe to readme.txt"
 
-git log                   # git log 只会在提交的时候记录, 像 reset 之类的操作都会记录在 reflog 中
+git log   # git log 只会在提交的时候记录, 像 reset 之类的操作都会记录在 reflog 中
 git reset --hard bfcadcf931900ae7c213711b1f713ed2d6d9f20e 
 git reset --hard HEAD^    #回退到上个版本 ，回退到上上个版本 HEAD^^
 git log
 git reflog
 git reset --hard 5126bfa  #回退到具体版本号
 
+
 远程仓库：
-cd /data/jared_work/mygit
+    cd /data/jared_work/mygit
+    git remote add origin git@github.com:jaredhuang/demo.git #参详http://iissnan.com/progit/html/zh-tw/ch9_5.html【收入百度云】
+        在你的 .git/config 文件中添加了如下配置，指定了远程的名称 (origin), 远程仓库的URL地址，和用于获取操作的 Refspec
+        [remote "origin"]
+               url = git@github.com:jaredhuang/demo.git
+               fetch = +refs/heads/*:refs/remotes/origin/*
+        Refspec 的格式是一個可選的 + 號，接著是 <src>:<dst> 的格式，這裡 <src> 是遠端上的引用格式， <dst> 是將要記錄在本地的引用格式。可選的 + 號告訴 Git 在即使不能快速演進(fast-forward)的情況下，也去強制更新它。
+        預設情況下 refspec 會被 git remote add 命令所自動產生，Git 會獲取遠端伺服器上 refs/heads/ 下面的所有引用，並將它寫入到本地的 refs/remotes/origin/.
+    cat .git/config
 
-git remote add origin git@github.com:jaredhuang/demo.git #参详http://iissnan.com/progit/html/zh-tw/ch9_5.html【收入百度云】
-在你的 .git/config 文件中添加了如下配置，指定了远程的名称 (origin), 远程仓库的URL地址，和用于获取操作的 Refspec
-[remote "origin"]
-       url = git@github.com:jaredhuang/demo.git
-       fetch = +refs/heads/*:refs/remotes/origin/*
-Refspec 的格式是一個可選的 + 號，接著是 <src>:<dst> 的格式，這裡 <src> 是遠端上的引用格式， <dst> 是將要記錄在本地的引用格式。可選的 + 號告訴 Git 在即使不能快速演進(fast-forward)的情況下，也去強制更新它。
-預設情況下 refspec 會被 git remote add 命令所自動產生，Git 會獲取遠端伺服器上 refs/heads/ 下面的所有引用，並將它寫入到本地的 refs/remotes/origin/. 
+    git pull origin master <-- 发现有冲突怎么办【Merge】
+        From xxx.xxx.com:jared/hello-test
+         * branch            master     -> FETCH_HEAD
+        Auto-merging readme.txt
+        CONFLICT (add/add): Merge conflict in readme.txt
+        Automatic merge failed; fix conflicts and then commit the result.
 
-cat .git/config
+    echo "dddd" > readme  #手动解决冲突
+    git add readme.txt
+    git commit -m "change readme"
+    git push origin master  # 推送分支。
+        如果碰到需要输入密码的情况，用下面的命令来解决--20180614：
+        ssh -v -T git@your.gitlb.com <---调试过程
+        检查生成的 /root/.ssh/id_rsa.pub 在复制的时候是不是有空格。
 
-如果碰到需要输入密码的情况，用下面的命令来解决--20180614：
-ssh -v -T git@your.gitlb.com <---调试过程
-检查生成的 /root/.ssh/id_rsa.pub 在复制的时候是不是有空格。
-
-git pull origin master <-- 发现有冲突怎么办【Merge】
-    From xxx.xxx.com:jared/hello-test
-     * branch            master     -> FETCH_HEAD
-    Auto-merging readme.txt
-    CONFLICT (add/add): Merge conflict in readme.txt
-    Automatic merge failed; fix conflicts and then commit the result.
-
-echo "dddd" > readme  #手动解决冲突
-git add readme.txt
-git commit -m "change readme"
-git push origin master  # 推送分支。
-
-git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认
-理解：https://github.com/rosing/pythoncamp0/blob/master/wiki/origin.md
-  origin 基本上在 remote、push 和 pull 相关语句中出现
-  origin 实际上可以理解为连接通道的名字，相当于给你建立的传输通道取个名字，这样好方便push pull 等文件传输。
+        git push -u origin master  # 将本地的master分支推送到origin主机，同时指定origin为默认主机.使用-u选项指定一个默认
+        理解：https://github.com/rosing/pythoncamp0/blob/master/wiki/origin.md
+          origin 基本上在 remote、push 和 pull 相关语句中出现
+          origin 实际上可以理解为连接通道的名字，相当于给你建立的传输通道取个名字，这样好方便push pull 等文件传输。
 
 
-在被 git 管理的目录中删除文件时，可以选择如下两种方式来记录删除动作:
-命令一：rm     + git commit -am "abc"
-命令二：git rm + git commit -m  "abc"
-记住 git add . 仅能记录添加、改动的动作，删除的动作需靠 git rm 来完成。
-最后，rm 删除的文件是处于 not staged 状态的，也就是一种介于 “未改动” 和 “已提交过” 之间的状态。
-
-
-开源软件：
-https://www.sourcetreeapp.com/
 
 分支:
-git checkout -b dev   =切换分支到dev分支，命令等价于=   git branch dev && git checkout dev
-echo "dev" >> dev.txt
-git status
-git add dev.txt
-git commit -m "add dev.txt"
-git checkout master   ==》 必须先到 master 你才能合并。
-git merge dev
-git branch --merged  ==> 在master上，然后查看哪个分支被merged过来了。
-git branch --no-merged  ==》 在 master上， 查看没被merged过来的分支。
-git branch 	  #查看分支情况
-git branch -d dev #删除分支
+    git checkout -b dev   # 切换分支到dev分支，命令等价于 => git branch dev && git checkout dev
+    echo "dev" >> dev.txt
+    git status
+    git add dev.txt
+    git commit -m "add dev.txt"
+    git checkout master   ==》 必须先到 master 你才能合并。
+    git merge dev
+    git branch --merged  ==> 在master上，然后查看哪个分支被merged过来了。
+    git branch --no-merged  ==》 在 master上， 查看没被merged过来的分支。
+    git branch 	  #查看分支情况
+    git branch -d dev #删除分支
 
-远端分支：
-git branch -a  #查看所有分支列表。
-git push origin --delete dev #删除
+    远端分支：
+    git branch -a  #查看所有分支列表。
+    git push origin --delete dev #删除
 
 冲突：
-git checkout -b prod
-echo "prod" >> prod.txt
-git add prod.txt
-git commit -m "change pro.txt"
+    git checkout -b prod
+    echo "prod" >> prod.txt
+    git add prod.txt
+    git commit -m "change pro.txt"
 
-git checkout master
-echo "master" > prod.txt
-git add prod.txt 
-git commit -m "prod.txt add"
-git merge prod
-cat prod.txt 
-    <<<<<<< HEAD
-    master
-    =======
-    prod
-    >>>>>>> prod
-echo "dddd" > prod.txt  #手动解决冲突
-git add prod.txt
-git commit -m "change proddddd"
-git merge prod
+    git checkout master
+    echo "master" > prod.txt
+    git add prod.txt
+    git commit -m "prod.txt add"
+    git merge prod
+    cat prod.txt
+        <<<<<<< HEAD
+        master
+        =======
+        prod
+        >>>>>>> prod
+    echo "dddd" > prod.txt  #手动解决冲突
+    git add prod.txt
+    git commit -m "change proddddd"
+    git merge prod
 
-git push origin prod  # 推送分支。
+    git push origin prod  # 推送分支。
 
 打标签：
-git checkout master
-git tag v1.0
-git tag
-git show v1.0
-git push origin v1.0  # 推送标签
-git checkout v1.0
+    git checkout master
+    git tag v1.0
+    git tag
+    git show v1.0
+    git push origin v1.0  # 推送标签
+    git checkout v1.0
 
-cat .gitignore 
-# 此为注释 – 将被 Git 忽略
-*.[oa]       #<-- 忽略所有以 .o 或 .a 结尾的文件
-*~           #<-- 忽略所有以波浪符（~）结尾的文件
-*.a          #<-- 忽略所有 .a 结尾的文件
-!lib.a       # 但 lib.a 除外
-/TODO    # 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
-build/     # 忽略 build/ 目录下的所有文件
-doc/*.txt  # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
-doc/**/*.txt  # ignore all .txt files in the doc/ directory
+    cat .gitignore
+    # 此为注释 – 将被 Git 忽略
+    *.[oa]       #<-- 忽略所有以 .o 或 .a 结尾的文件
+    *~           #<-- 忽略所有以波浪符（~）结尾的文件
+    *.a          #<-- 忽略所有 .a 结尾的文件
+    !lib.a       # 但 lib.a 除外
+    /TODO    # 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
+    build/     # 忽略 build/ 目录下的所有文件
+    doc/*.txt  # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
+    doc/**/*.txt  # ignore all .txt files in the doc/ directory
 
 开源软件：
-http://markdownpad.com
+    http://markdownpad.com
 
+开源软件：
+    https://www.sourcetreeapp.com/
