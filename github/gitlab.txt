@@ -1,0 +1,68 @@
+ 集成组件有：
+    nginx 静态web服务器
+    postgreSQL 数据库
+    redis  缓存数据库
+    sidekiq  用于在后台执行队列任务(异步执行)
+    logrotate  日志文件管理工具
+    unicorn   ---> Gitlab rails 应用是托管在这个服务器上面的
+    gitlab-shell  --->  用于处理git命令和修改authorized keys列表
+    gitlab-workhorse   ---> 轻量级的反向代理服务器
+
+目录：
+    /var/opt/gitlab/git-data/repositories/root  代码库默认存储目录
+    /opt/gitlab     应用代码和相应的依赖程序
+    /var/opt/gitlab    是gitlab-ctl reconfigure命令编译后的应用数据和配置文件，不需要人为修改配置
+    /etc/gitlab     配置文件目录
+    /var/log/gitlab     此目录存放各个组件产生的日志
+    /var/opt/gitlab/backups   备份文件生成的目录
+
+
+
+要求：
+    内存最好 2G 以上
+
+1) 安装依赖
+    yum install curl policycoreutils openssh-server openssl-clients
+    systemctl enabled sshd
+    systemctl start sshd
+    yum install postfix
+    systemctl enable postfix
+    systemctl start postfox
+
+2) RPM安装
+    https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el6/
+    rpm -ivh gitlab-ce-8.9.5-ce.0.el7.x86_64.rpm
+
+3) 修改配置文件
+    vim /etc/gitlab/gitlab.rb
+    external_url 'your_ip_address'
+    gitlab-ctl reconfigure #自动化配置脚本
+    gitlab-ctl show-config
+    gitlab-ctl status
+    gitlab-ctl start
+    gitlab-ctl stop
+    gitlab-ctl restart
+    gitlab-ctl tail nginx
+
+
+操作：
+    Group 按照项目来分配  ---> 提供给各个开发团队的
+        登录 gitlab --> Admin Area --> New Group  --> java
+        Private 只有我给他授权的人，才能访问项目
+        Internal 所有能登录gitlab的人都能访问
+        Public 能打开gitlab网站的人都能访问，公开级！
+
+    给组授权
+        Guest
+        Reporter
+        Developer
+        Master
+        Owner   所有者
+
+    创建项目
+        proj1
+
+注意点：
+    登录 gitlab --> Admin Area --》 小齿轮 --》 Deploy Key
+    public deploy keys # 管理员登录，设置这个key ，只能下载代码，不能上传代码。用途是给 jenkins 使用的。
+
